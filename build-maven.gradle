@@ -1,0 +1,100 @@
+import org.apache.maven.model.Developer
+import org.apache.maven.model.License
+import org.apache.maven.model.Scm
+import org.apache.maven.project.MavenProject
+
+apply plugin: RemoteMavenPlugin
+
+class RemoteMavenPlugin implements Plugin<Project> {
+
+    @Override
+    void apply(Project project) {
+        PluginContainer container = project.getPlugins()
+        if (!container.hasPlugin(MavenPlugin)) {
+            container.apply(MavenPlugin)
+        }
+        if (!container.hasPlugin(SigningPlugin)) {
+            container.apply(SigningPlugin)
+        }
+        project.extensions.create('mavenOptions', MavenOptionsExtension, project)
+        project.afterEvaluate(new AfterEvaluateAction())
+    }
+}
+
+@SuppressWarnings("GroovyAssignabilityCheck")
+class AfterEvaluateAction implements Action<Project> {
+    @Override
+    void execute(Project project) {
+        MavenOptionsExtension options = project.mavenOptions
+        options.targets.each { Repository target ->
+
+            // create task
+            String taskName = "publish${target.name.capitalize()}Release"
+            Upload task = project.tasks.create(taskName, Upload.class)
+            task.group = 'publish'
+
+            MavenResolver resolver = task.repositories.mavenDeployer
+            resolver.pom.groupId = project.group
+            resolver.pom.artifactId = project.id
+            resolver.pom.version = project.version
+
+            MavenProject mavenProject = resolver.pom.project
+            mavenProject.name = options.name
+            mavenProject.packaging = options.packaging
+            mavenProject.description = options.description
+            mavenProject.url = options.url
+            mavenProject.scm = options.scm
+            mavenProject.licenses.add(options.license)
+            mavenProject.developers.add(options.developer)
+        }
+    }
+}
+
+class MavenOptionsExtension {
+
+    String name = "ActionBar-PullToRefresh Library"
+    String packaging = 'aar'
+    String description = "a modern implementation of the pull-to-refresh for android"
+    String url = "https://github.com/chrisbanes/actionbar-pulltorefresh"
+    Scm scm = new Scm()
+    License license = new License()
+    Developer developer = new Developer()
+    NamedDomainObjectContainer<Repository> targets;
+
+    public MavenOptionsExtension(Project project) {
+        targets = project.container(Repository)
+    }
+
+    public void targets(Action<NamedDomainObjectContainer<Repository>> action) {
+        action.execute(targets)
+    }
+}
+
+class Repository {
+    String name
+
+    void releaseUrl(String releaseUrl) {
+        this.releaseUrl = releaseUrl
+    }
+
+    void snapshotUrl(String snapshotUrl) {
+        this.snapshotUrl = snapshotUrl
+    }
+
+    void username(String username) {
+        this.username = username
+    }
+
+    void password(String password) {
+        this.password = password
+    }
+    String releaseUrl = 'http://www.apache.org/licenses/license-2.0.txt'
+    String snapshotUrl = 'http://www.apache.org/licenses/license-2.0.txt'
+    String username = "scm:git@github.com:chrisbanes/actionbar-pulltorefresh.git"
+    String password = "scm:git@github.com:chrisbanes/actionbar-pulltorefresh.git"
+
+    Repository(String name) {
+        this.name = name
+    }
+}
+

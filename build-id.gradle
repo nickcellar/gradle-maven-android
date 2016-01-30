@@ -1,0 +1,12 @@
+def id(param) {
+    project.ext.artifact = param
+}
+
+def getId() {
+    return project.ext.artifact
+}
+
+ext {
+    id = this.&id
+    getId = this.&getId
+}
