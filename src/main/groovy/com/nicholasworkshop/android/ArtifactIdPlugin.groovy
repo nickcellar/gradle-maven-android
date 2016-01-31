@@ -6,7 +6,7 @@ import org.gradle.api.internal.project.ProjectInternal;
 /**
  * Created by nickwph on 1/29/16.
  */
-public class MavenIdPlugin implements Plugin<ProjectInternal> {
+public class ArtifactIdPlugin implements Plugin<ProjectInternal> {
 
     private ProjectInternal project
 

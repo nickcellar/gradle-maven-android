@@ -10,7 +10,7 @@ class MavenPlugin implements Plugin<ProjectInternal> {
 
     @Override
     void apply(ProjectInternal project) {
-        project.pluginManager.apply(MavenIdPlugin);
+        project.pluginManager.apply(ArtifactIdPlugin);
         project.pluginManager.apply(LocalMavenPlugin);
         project.pluginManager.apply(RemoteMavenPlugin);
     }
