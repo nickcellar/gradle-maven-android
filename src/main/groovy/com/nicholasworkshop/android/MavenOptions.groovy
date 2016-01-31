@@ -5,13 +5,13 @@ import org.apache.maven.model.License
 import org.apache.maven.model.Scm
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project;
+import org.gradle.api.Project
 
 /**
  * Created by nickwph on 1/28/16.
  */
 
-class MavenOptionsExtension {
+class MavenOptions {
 
     String name = "ActionBar-PullToRefresh Library"
     String packaging = 'aar'
@@ -20,13 +20,13 @@ class MavenOptionsExtension {
     Scm scm = new Scm()
     License license = new License()
     Developer developer = new Developer()
-    NamedDomainObjectContainer<Repository> targets;
+    NamedDomainObjectContainer<Target> targets;
 
-    public MavenOptionsExtension(Project project) {
-        targets = project.container(Repository)
+    public MavenOptions(Project project) {
+        targets = project.container(Target)
     }
 
-    public void targets(Action<NamedDomainObjectContainer<Repository>> action) {
+    public void targets(Action<NamedDomainObjectContainer<Target>> action) {
         action.execute(targets)
     }
 }

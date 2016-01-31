@@ -100,18 +100,18 @@ class LocalMavenPlugin implements Plugin<ProjectInternal> {
                         COMPILE_PRIORITY,
                         configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME),
                         Conf2ScopeMappingContainer.COMPILE);
-                mavenScopeMappings.addMapping(
-                        RUNTIME_PRIORITY,
-                        configurations.getByName(JavaPlugin.RUNTIME_CONFIGURATION_NAME),
-                        Conf2ScopeMappingContainer.RUNTIME);
+//                mavenScopeMappings.addMapping(
+//                        RUNTIME_PRIORITY,
+//                        configurations.getByName(JavaPlugin.RUNTIME_CONFIGURATION_NAME),
+//                        Conf2ScopeMappingContainer.RUNTIME);
                 mavenScopeMappings.addMapping(
                         TEST_COMPILE_PRIORITY,
                         configurations.getByName(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME),
                         Conf2ScopeMappingContainer.TEST);
-                mavenScopeMappings.addMapping(
-                        TEST_RUNTIME_PRIORITY,
-                        configurations.getByName(JavaPlugin.TEST_RUNTIME_CONFIGURATION_NAME),
-                        Conf2ScopeMappingContainer.TEST);
+//                mavenScopeMappings.addMapping(
+//                        TEST_RUNTIME_PRIORITY,
+//                        configurations.getByName(JavaPlugin.TEST_RUNTIME_CONFIGURATION_NAME),
+//                        Conf2ScopeMappingContainer.TEST);
                 //
                 Upload installUpload = project.getTasks().create(INSTALL_TASK_NAME, Upload.class);
                 installUpload.group = 'publish'

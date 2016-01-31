@@ -8,14 +8,17 @@ import org.gradle.api.internal.project.ProjectInternal;
  */
 public class MavenIdPlugin implements Plugin<ProjectInternal> {
 
+    private ProjectInternal project
+
     void apply(ProjectInternal project) {
+        this.project = project
         project.ext {
             id = this.&id
             getId = this.&getId
         }
     }
 
-    String id(param) {
+    void id(param) {
         project.ext.artifact = param
     }
 
