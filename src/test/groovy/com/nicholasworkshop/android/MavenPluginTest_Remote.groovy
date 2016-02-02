@@ -14,6 +14,7 @@ class MavenPluginTest_Remote {
     void testApply() throws Exception {
         Project project = AndroidProjectUtils.createAndroidApplicaitonProject()
         project.apply(plugin: 'com.nicholasworkshop.android.maven')
+        project.id 'id'
         project.evaluate()
     }
 
@@ -38,7 +39,10 @@ class MavenPluginTest_Remote {
         Assert.assertTrue(project.tasks.getNames().contains("publishSonatype"))
         Upload upload = project.tasks.getByName("publishSonatype")
         Assert.assertNotNull(upload)
-//        Assert.equals('releaseUrl', upload.uploadDescriptor.)
+        Assert.assertEquals('releaseUrl', upload.repositories.mavenDeployer.repository.url)
+        Assert.assertEquals('releaseUrl', upload.repositories.mavenDeployer.snapshotRepository.url)
+        Assert.assertEquals('releaseUrl', upload.repositories.mavenDeployer.repository.url)
+        Assert.assertEquals('releaseUrl', upload.repositories.mavenDeployer.repository.url)
     }
 
 

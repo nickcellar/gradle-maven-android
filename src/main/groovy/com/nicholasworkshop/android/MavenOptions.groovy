@@ -13,13 +13,23 @@ import org.gradle.api.Project
 
 class MavenOptions {
 
-    String name = "ActionBar-PullToRefresh Library"
+    // artifact info
+    String id
+    String group
+    String version
+
+    // project info
+    String projectName = "ActionBar-PullToRefresh Library"
     String packaging = 'aar'
     String description = "a modern implementation of the pull-to-refresh for android"
     String url = "https://github.com/chrisbanes/actionbar-pulltorefresh"
+
+    // extra info
     Scm scm = new Scm()
     License license = new License()
     Developer developer = new Developer()
+
+    // generated targets
     NamedDomainObjectContainer<Target> targets;
 
     public MavenOptions(Project project) {

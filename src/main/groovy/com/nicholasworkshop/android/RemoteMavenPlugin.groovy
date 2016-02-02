@@ -1,6 +1,7 @@
 package com.nicholasworkshop.android
 
 import org.gradle.api.Action
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.maven.MavenDeployment
@@ -31,12 +32,46 @@ class RemoteMavenPlugin implements Plugin<Project> {
     private class AfterEvaluateAction implements Action<Project> {
         @Override
         void execute(Project project) {
-            MavenOptions options = project.mavenOptions
+            MavenOptions options = validateOptions(project, (MavenOptions) project.mavenOptions)
             options.targets.each { Target target ->
-                boolean
                 createMavenUploadTask(project, target, options)
             }
         }
+    }
+
+    private static MavenOptions validateOptions(Project project, MavenOptions options) {
+
+        if (options.id == null) {
+            if (project.plugins.hasPlugin(ArtifactIdPlugin) && project.hasId()) {
+                options.id = project.getId()
+            } else if (project.hasProperty('artifactId')) {
+                options.id = project.ext.artifactId
+            } else {
+                throw new GradleException("Artifact id not set!")
+            }
+        }
+
+        if (options.group == null) {
+            if (project.group != null) {
+                options.group = project.group
+            } else {
+                throw new GradleException("Group id not set!")
+            }
+        }
+
+        if (options.version == null) {
+            if (project.version != null) {
+                options.version = project.version
+            } else {
+                throw new GradleException("Version not set!")
+            }
+        }
+
+        if (options.projectName == null) {
+            throw new GradleException("Project name not set!")
+        }
+
+        return options;
     }
 
     private Upload createMavenUploadTask(Project project, Target target, MavenOptions options) {
@@ -46,11 +81,11 @@ class RemoteMavenPlugin implements Plugin<Project> {
         upload.group = 'publish'
         upload.repositories {
             mavenDeployer {
-                pom.groupId = project.group
-                pom.artifactId = project.id
-                pom.version = project.version
+                pom.groupId = options.group
+                pom.artifactId = options.id
+                pom.version = options.version
                 pom.project {
-                    name = options.name
+                    name = options.projectName
                     packaging = options.packaging
                     description = options.description
                     url = options.url

@@ -15,6 +15,7 @@ public class ArtifactIdPlugin implements Plugin<ProjectInternal> {
         project.ext {
             id = this.&id
             getId = this.&getId
+            hasId = this.&hasId
         }
     }
 
@@ -23,6 +24,10 @@ public class ArtifactIdPlugin implements Plugin<ProjectInternal> {
     }
 
     String getId() {
-        return project.ext.artifact
+        return project.hasProperty('artifact') ? project.ext.artifact : null
+    }
+
+    boolean hasId() {
+        return project.hasProperty('artifact')
     }
 }

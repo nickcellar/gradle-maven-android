@@ -4,6 +4,7 @@ package com.nicholasworkshop.android
  * Created by nickwph on 1/30/16.
  */
 class Target {
+
     String name
     String releaseUrl = 'http://www.apache.org/licenses/license-2.0.txt'
     String snapshotUrl = 'http://www.apache.org/licenses/license-2.0.txt'

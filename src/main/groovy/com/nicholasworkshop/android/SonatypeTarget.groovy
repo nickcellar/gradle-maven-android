@@ -3,7 +3,11 @@ package com.nicholasworkshop.android;
 /**
  * Created by nickwph on 1/26/16.
  */
-public class SonatypeTarget implements Repo {
+public class SonatypeTarget extends Target {
+
+    SonatypeTarget(String name) {
+        super(name)
+    }
 
     @Override
     String getReleaseUrl() {
